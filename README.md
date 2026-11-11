@@ -11,7 +11,7 @@
 |---|---|
 | 代码仓库（Gitee，提交用） | https://gitee.com/cq319/study-task |
 | Gitee 个人主页 | https://gitee.com/cq319 |
-| 代码仓库（GitHub，部署镜像） | https://github.com/cq319/study-task |
+| 代码仓库（GitHub，部署镜像） | https://github.com/cql123-love/study-task |
 | Web 访问地址（Render 免费托管） | https://studytask.onrender.com |
 
 > 说明：Render 免费实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒；且免费实例磁盘为临时盘，**重新部署后数据会重置**。持久化验收（T10）请以本地运行为准。
