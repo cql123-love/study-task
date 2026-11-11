@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}任务详情{% endblock %}
+{% block content %}
+<h2>{{ task.name }}</h2>
+{% if task.flag == '逾期' %}<span class="pill flag-overdue">逾期</span>
+{% elif task.flag == '即将到期' %}<span class="pill flag-soon">即将到期</span>{% endif %}
+<dl class="detail">
+  <dt>所属课程</dt><dd>{{ task.course }}</dd>
+  <dt>截止日期</dt><dd>{{ task.due_date }}</dd>
+  <dt>优先级</dt><dd>{{ task.priority }}</dd>
+  <dt>状态</dt><dd>{{ task.status }}</dd>
+  <dt>任务描述</dt><dd>{{ task.description or '（无）' }}</dd>
+  <dt>创建时间</dt><dd>{{ task.created_at }}</dd>
+  <dt>更新时间</dt><dd>{{ task.updated_at }}</dd>
+</dl>
+<div class="form-actions">
+  <a class="btn" href="{{ url_for('edit', task_id=task.id) }}">编辑</a>
+  <a class="btn danger" href="{{ url_for('delete', task_id=task.id) }}">删除</a>
+  <a class="btn btn-ghost" href="{{ url_for('index') }}">返回列表</a>
+</div>
+{% endblock %}

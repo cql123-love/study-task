@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}任务列表{% endblock %}
+{% block content %}
+<section class="stats">
+  <div class="stat-card"><div class="stat-num">{{ total }}</div><div class="stat-label">任务总数</div></div>
+  <div class="stat-card"><div class="stat-num">{{ done }}</div><div class="stat-label">已完成</div></div>
+  <div class="stat-card"><div class="stat-num">{{ rate }}%</div><div class="stat-label">完成率</div></div>
+</section>
+
+<section class="filters">
+  <form method="get" action="{{ url_for('index') }}" class="filter-form">
+    <label>课程
+      <input type="text" name="course" value="{{ f_course }}" placeholder="按课程筛选">
+    </label>
+    <label>状态
+      <select name="status">
+        <option value="">全部</option>
+        {% for s in statuses %}<option value="{{ s }}" {% if f_status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>优先级
+      <select name="priority">
+        <option value="">全部</option>
+        {% for p in priorities %}<option value="{{ p }}" {% if f_priority == p %}selected{% endif %}>{{ p }}</option>{% endfor %}
+      </select>
+    </label>
+    <button type="submit" class="btn">筛选</button>
+    <a class="btn btn-ghost" href="{{ url_for('index') }}">清除</a>
+  </form>
+</section>
+
+<section class="task-table">
+  {% if tasks %}
+  <table>
+    <thead>
+      <tr><th>任务名称</th><th>课程</th><th>截止日期</th><th>优先级</th><th>状态</th><th>标记</th><th>操作</th></tr>
+    </thead>
+    <tbody>
+      {% for t in tasks %}
+      <tr>
+        <td><a class="task-name" href="{{ url_for('detail', task_id=t.id) }}">{{ t.name }}</a></td>
+        <td>{{ t.course }}</td>
+        <td>{{ t.due_date }}</td>
+        <td><span class="pill prio-{{ 'high' if t.priority=='高' else ('mid' if t.priority=='中' else 'low') }}">{{ t.priority }}</span></td>
+        <td>
+          <form method="post" action="{{ url_for('change_status', task_id=t.id) }}" class="inline-form">
+            <select name="status" onchange="this.form.submit()">
+              {% for s in statuses %}<option value="{{ s }}" {% if t.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+            </select>
+          </form>
+        </td>
+        <td>
+          {% if t.flag == '逾期' %}<span class="pill flag-overdue">逾期</span>
+          {% elif t.flag == '即将到期' %}<span class="pill flag-soon">即将到期</span>
+          {% else %}<span class="muted">—</span>{% endif %}
+        </td>
+        <td class="actions">
+          <a href="{{ url_for('edit', task_id=t.id) }}">编辑</a>
+          <a class="danger" href="{{ url_for('delete', task_id=t.id) }}">删除</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">暂无任务，点击右上角「＋ 新建任务」开始记录你的学习任务。</div>
+  {% endif %}
+</section>
+{% endblock %}
