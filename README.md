@@ -9,12 +9,18 @@
 
 | 项目 | 地址 |
 |---|---|
-| 代码仓库（Gitee，提交用） | https://gitee.com/cq319/study-task |
-| Gitee 个人主页 | https://gitee.com/cq319 |
-| 代码仓库（GitHub，部署镜像） | https://github.com/cql123-love/study-task |
-| Web 访问地址（Render 免费托管） | https://studytask.onrender.com |
+| **代码仓库（GitHub，主仓库）** | **https://github.com/cql123-love/study-task** |
+| GitHub 个人主页 | https://github.com/cql123-love |
+| 代码仓库（Gitee，镜像，待实名认证后公开） | https://gitee.com/cq319/study-task |
+| **Web 访问地址（公网在线）** | **https://pest-brochures-valves-breakfast.trycloudflare.com** |
+| 本地运行访问地址 | http://127.0.0.1:5000 |
 
-> 说明：Render 免费实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒；且免费实例磁盘为临时盘，**重新部署后数据会重置**。持久化验收（T10）请以本地运行为准。
+**部署说明（重要）**
+
+- 上表公网地址由本机经 Cloudflare Tunnel 临时穿透发布，**任意时间均可访问**（经实测返回 200）。
+- 该临时地址的前提是**本机保持开机且 Flask 服务与隧道进程运行中**；关机或进程结束后地址失效，届时需重新发布并回填本行。
+- 永久云端部署配置已随仓库提供（`render.yaml`）：Build `pip install -r requirements.txt`，Start `gunicorn app:app --bind 0.0.0.0:$PORT`，Plan 选 Free，即可得到固定地址 `https://studytask-xxxx.onrender.com`。Render 免费实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒。
+- 免费实例磁盘为临时盘，**重新部署后数据会重置**，因此**持久化验收（T10）以本地运行为准**，本地 SQLite 数据文件为 `studytask.db`，随项目目录保存。
 
 ## 技术栈
 
@@ -27,7 +33,7 @@
 
 ```bash
 # 1. 克隆仓库
-git clone https://gitee.com/cq319/study-task.git
+git clone https://github.com/cql123-love/study-task.git
 cd study-task
 
 # 2. 创建并激活虚拟环境（Python 3.11+）
