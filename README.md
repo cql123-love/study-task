@@ -38,13 +38,16 @@
 - Plan：`Free`
 - 环境变量：`STUDYTASK_SEED=1`、`STUDYTASK_DB=/tmp/studytask.db`
 
-操作步骤：
+操作步骤（**推荐一键蓝图部署**）：
 
-1. 打开 <https://render.com> → **Get Started** → 选择 **用 GitHub 登录**（本项目仓库已在 GitHub，无需上传代码）
-2. 进入 Dashboard 后点击 **New → Web Service**，选择 `cql123-love/study-task`
-3. Instance Type 选择 **Free**，点击 **Create Web Service**
+1. 打开 <https://dashboard.render.com/blueprint/new?repo=https%3A%2F%2Fgithub.com%2Fcql123-love%2Fstudy-task>
+   （该链接会自动读取本仓库的 `render.yaml`，Build/Start 命令、Free 方案与环境变量全部自动填好）
+2. 页面确认后点击 **Apply**（首次需先「用 GitHub 登录」并授权仓库访问）
+3. 等待构建完成（约 2~5 分钟），生成 `https://studytask-xxxx.onrender.com` 固定地址
 
-构建完成后约 2~5 分钟生成 `https://studytask-xxxx.onrender.com` 固定地址，将该地址回填到上表「Web 访问地址 A」一行即可。
+若 `render.com` 主域名因网络 DNS 污染打不开，直接改用 **https://dashboard.render.com/** 亦可（该域名在受污染网络下可正常访问），操作路径为 Dashboard → New → Web Service → 选择 `cql123-love/study-task` → Instance Type 选 Free → Create Web Service。
+
+部署完成后，将生成的 `https://studytask-xxxx.onrender.com` 回填到上表「Web 访问地址 A」一行即可。
 
 
 ## 技术栈
