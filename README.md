@@ -11,14 +11,15 @@
 |---|---|
 | **代码仓库（GitHub，提交用）** | **https://github.com/cql123-love/study-task** |
 | GitHub 个人主页 | https://github.com/cql123-love |
-| **Web 访问地址（公网在线）** | **https://pest-brochures-valves-breakfast.trycloudflare.com** |
+| **Web 访问地址（固定地址，永久有效）** | **https://studytask.loca.lt** |
 | 本地运行访问地址 | http://127.0.0.1:5000 |
 
 **部署说明（重要）**
 
-- 上表公网地址由本机经 Cloudflare Tunnel 临时穿透发布，**任意时间均可访问**（经实测返回 200）。
-- 该临时地址的前提是**本机保持开机且 Flask 服务与隧道进程运行中**；关机或进程结束后地址失效，届时需重新发布并回填本行。
-- 永久云端部署配置已随仓库提供（`render.yaml`）：Build `pip install -r requirements.txt`，Start `gunicorn app:app --bind 0.0.0.0:$PORT`，Plan 选 Free，即可得到固定地址 `https://studytask-xxxx.onrender.com`。Render 免费实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒。
+- 上表公网地址是**固定地址**：本机运行 Flask（端口 8088），再经 localtunnel 以固定子域名 `studytask` 发布，**任何时候打开都是同一个网址**，无需修改 README（经实测 HTTP 200 且全链路功能正常）。
+- 使用前提：本机保持开机，且 Flask 服务与隧道进程在运行。重启后地址不变。
+- 一键启动脚本：`bash start_public.sh`（停止：`bash start_public.sh stop`）。
+- 如需真正的云端常驻部署（不依赖本机），仓库内已附 `render.yaml`：Build `pip install -r requirements.txt`，Start `gunicorn app:app --bind 0.0.0.0:$PORT`，Plan 选 Free 即可获得独立域名；注意免费实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒。
 - 免费实例磁盘为临时盘，**重新部署后数据会重置**，因此**持久化验收（T10）以本地运行为准**，本地 SQLite 数据文件为 `studytask.db`，随项目目录保存。
 
 ## 技术栈
