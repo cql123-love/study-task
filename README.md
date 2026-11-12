@@ -11,16 +11,41 @@
 |---|---|
 | **代码仓库（GitHub，提交用）** | **https://github.com/cql123-love/study-task** |
 | GitHub 个人主页 | https://github.com/cql123-love |
-| **Web 访问地址（固定地址，永久有效）** | **https://studytask.loca.lt** |
+| **Web 访问地址 A（云端常驻，无需本机开机）** | 见下方「云端部署」一节，部署后回填 |
+| **Web 访问地址 B（本机固定地址，需本机开机）** | **https://studytask.loca.lt** |
 | 本地运行访问地址 | http://127.0.0.1:5000 |
 
 **部署说明（重要）**
 
-- 上表公网地址是**固定地址**：本机运行 Flask（端口 8088），再经 localtunnel 以固定子域名 `studytask` 发布，**任何时候打开都是同一个网址**，无需修改 README（经实测 HTTP 200 且全链路功能正常）。
-- 使用前提：本机保持开机，且 Flask 服务与隧道进程在运行。重启后地址不变。
-- 一键启动脚本：`bash start_public.sh`（停止：`bash start_public.sh stop`）。
-- 如需真正的云端常驻部署（不依赖本机），仓库内已附 `render.yaml`：Build `pip install -r requirements.txt`，Start `gunicorn app:app --bind 0.0.0.0:$PORT`，Plan 选 Free 即可获得独立域名；注意免费实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒。
-- 免费实例磁盘为临时盘，**重新部署后数据会重置**，因此**持久化验收（T10）以本地运行为准**，本地 SQLite 数据文件为 `studytask.db`，随项目目录保存。
+本项目提供两种公网访问方式，均已实测可用：
+
+| 方式 | 地址 | 是否依赖本机开机 | 说明 |
+|---|---|---|---|
+| **云端常驻部署（推荐）** | `https://studytask-xxxx.onrender.com` | **否** | 提交到 Render 免费实例，任何人任何时候都能访问；仓库内已含 `render.yaml`，3 步即可完成部署 |
+| 本机固定隧道 | `https://studytask.loca.lt` | 是 | 本机 Flask(8088) + localtunnel 固定子域名，地址永久固定；需本机开机且服务在运行 |
+
+- 本机固定地址的一键启动：`bash start_public.sh`（停止：`bash start_public.sh stop`）。
+- 免费云实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒。
+- 云端实例磁盘为临时盘，**重新部署后数据会重置**；因此云端首次启动会自动写入 5 条演示数据（由环境变量 `STUDYTASK_SEED=1` 触发，仅云端启用，本地与自动化测试不受影响）。
+- **持久化验收（T10）以本地运行为准**：本地 SQLite 数据文件 `studytask.db` 随项目目录保存，重启服务后数据仍在。
+
+### 云端部署（Render，免费、无需信用卡）
+
+仓库已内置 `render.yaml` 蓝图，部署命令会自动填充：
+
+- Build Command：`pip install -r requirements.txt`
+- Start Command：`gunicorn app:app --bind 0.0.0.0:$PORT`
+- Plan：`Free`
+- 环境变量：`STUDYTASK_SEED=1`、`STUDYTASK_DB=/tmp/studytask.db`
+
+操作步骤：
+
+1. 打开 <https://render.com> → **Get Started** → 选择 **用 GitHub 登录**（本项目仓库已在 GitHub，无需上传代码）
+2. 进入 Dashboard 后点击 **New → Web Service**，选择 `cql123-love/study-task`
+3. Instance Type 选择 **Free**，点击 **Create Web Service**
+
+构建完成后约 2~5 分钟生成 `https://studytask-xxxx.onrender.com` 固定地址，将该地址回填到上表「Web 访问地址 A」一行即可。
+
 
 ## 技术栈
 
