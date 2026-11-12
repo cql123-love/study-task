@@ -48,7 +48,37 @@ def init_db():
     conn.close()
 
 
-# ---------------------------------------------------------------- 校验
+def seed_demo_data():
+    """云端演示用：数据库为空时写入一组示例任务。
+
+    仅在环境变量 STUDYTASK_SEED=1 时启用（云端部署配置在 render.yaml 中设置），
+    本地运行与自动化测试不触发，保证测试用例的干净初始状态。
+    """
+    if os.environ.get("STUDYTASK_SEED") != "1":
+        return
+    conn = get_db()
+    if conn.execute("SELECT COUNT(*) FROM tasks").fetchone()[0] > 0:
+        conn.close()
+        return
+    today = date.today()
+    rows = [
+        ("软件工程实验一报告", "软件工程", "完成实验报告并提交验收表", "中", 3, "已完成"),
+        ("数据结构大作业", "数据结构", "平衡二叉树实现", "高", 1, "进行中"),
+        ("操作系统第三章习题", "操作系统", "进程同步与死锁习题 3-8", "中", 2, "待完成"),
+        ("计算机网络课后题", "计算机网络", "TCP 三次握手与四次挥手", "低", 5, "待完成"),
+        ("英语四级听力练习", "大学英语", "听力真题 Day 12", "低", -1, "待完成"),
+    ]
+    now = today.isoformat()
+    for name, course, desc, priority, offset, status in rows:
+        due = (today + timedelta(days=offset)).isoformat()
+        conn.execute(
+            "INSERT INTO tasks (name, course, description, due_date, priority,"
+            " status, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)",
+            (name, course, desc, due, priority, status, now, now),
+        )
+    conn.commit()
+    conn.close()
+
 def validate_form(form):
     """校验表单，返回 (data, errors)。规则见 SRS A.2 / FR-01。"""
     errors = []
@@ -293,6 +323,7 @@ def not_found(_e):
 
 
 init_db()
+seed_demo_data()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

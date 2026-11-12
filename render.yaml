@@ -6,3 +6,8 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     healthCheckPath: /
+    envVars:
+      - key: STUDYTASK_SEED
+        value: "1"
+      - key: STUDYTASK_DB
+        value: /tmp/studytask.db
