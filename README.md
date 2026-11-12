@@ -9,9 +9,8 @@
 
 | 项目 | 地址 |
 |---|---|
-| **代码仓库（GitHub，主仓库）** | **https://github.com/cql123-love/study-task** |
+| **代码仓库（GitHub，提交用）** | **https://github.com/cql123-love/study-task** |
 | GitHub 个人主页 | https://github.com/cql123-love |
-| 代码仓库（Gitee，镜像，待实名认证后公开） | https://gitee.com/cq319/study-task |
 | **Web 访问地址（公网在线）** | **https://pest-brochures-valves-breakfast.trycloudflare.com** |
 | 本地运行访问地址 | http://127.0.0.1:5000 |
 
