@@ -26,28 +26,33 @@
 
 - 本机固定地址的一键启动：`bash start_public.sh`（停止：`bash start_public.sh stop`）。
 - 免费云实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒。
-- 云端实例磁盘为临时盘，**重新部署后数据会重置**；因此云端首次启动会自动写入 5 条演示数据（由环境变量 `STUDYTASK_SEED=1` 触发，仅云端启用，本地与自动化测试不受影响）。
+- 云端实例磁盘为临时盘，**重新部署后数据会重置**；因此云端首次启动会自动写入 5 条演示数据（由环境变量 `STUDYTASK_SEED=1` 或云端环境自动检测触发，仅云端启用，本地运行与自动化测试不受影响）。
 - **持久化验收（T10）以本地运行为准**：本地 SQLite 数据文件 `studytask.db` 随项目目录保存，重启服务后数据仍在。
 
-### 云端部署（Render，免费、无需信用卡）
+### 云端部署（免费，无需信用卡）
 
-仓库已内置 `render.yaml` 蓝图，部署命令会自动填充：
+仓库已内置两套部署配置（`render.yaml` 与 `railway.json`），任选其一，**均不需要绑定信用卡**。
 
-- Build Command：`pip install -r requirements.txt`
-- Start Command：`gunicorn app:app --bind 0.0.0.0:$PORT`
-- Plan：`Free`
-- 环境变量：`STUDYTASK_SEED=1`、`STUDYTASK_DB=/tmp/studytask.db`
+**方案一：Render（推荐）**
 
-操作步骤（**推荐一键蓝图部署**）：
+配置（仓库内 `render.yaml` 已自动填好）：Build `pip install -r requirements.txt` / Start `gunicorn app:app --bind 0.0.0.0:$PORT` / Plan `Free`。
 
 1. 打开 <https://dashboard.render.com/blueprint/new?repo=https%3A%2F%2Fgithub.com%2Fcql123-love%2Fstudy-task>
-   （该链接会自动读取本仓库的 `render.yaml`，Build/Start 命令、Free 方案与环境变量全部自动填好）
 2. 页面确认后点击 **Apply**（首次需先「用 GitHub 登录」并授权仓库访问）
 3. 等待构建完成（约 2~5 分钟），生成 `https://studytask-xxxx.onrender.com` 固定地址
 
-若 `render.com` 主域名因网络 DNS 污染打不开，直接改用 **https://dashboard.render.com/** 亦可（该域名在受污染网络下可正常访问），操作路径为 Dashboard → New → Web Service → 选择 `cql123-love/study-task` → Instance Type 选 Free → Create Web Service。
+> ⚠️ 若创建服务时看到 **Starter / $7 per month** 之类的选项，**务必选 Free**——Render 仅在选择付费实例时才要求绑定信用卡；Free 实例全程免卡。
+> 若 `render.com` 主域名因网络 DNS 污染打不开，改用 **https://dashboard.render.com/** 亦可（该域名可正常访问），路径为 Dashboard → New → Web Service → 选择仓库 → Instance Type 选 Free → Create Web Service。
 
-部署完成后，将生成的 `https://studytask-xxxx.onrender.com` 回填到上表「Web 访问地址 A」一行即可。
+**方案二：Railway（国内访问更稳，同样免卡）**
+
+仓库内 `railway.json` 已配置好 Nixpacks 构建与启动命令。
+
+1. 打开 <https://console.railway.app/> → 用 GitHub 登录 → **New Project → Deploy from GitHub Repo**
+2. 选择 `cql123-love/study-task`，Railway 会自动读取 `railway.json` 完成构建
+3. 生成域名后，在 Service 的 **Settings → Networking** 中点 **Generate Domain** 即可得到公网地址
+
+**部署完成后**，将生成的公网地址回填到上表「Web 访问地址 A」一行即可。
 
 
 ## 技术栈

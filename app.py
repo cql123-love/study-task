@@ -51,10 +51,19 @@ def init_db():
 def seed_demo_data():
     """云端演示用：数据库为空时写入一组示例任务。
 
-    仅在环境变量 STUDYTASK_SEED=1 时启用（云端部署配置在 render.yaml 中设置），
-    本地运行与自动化测试不触发，保证测试用例的干净初始状态。
+    启用条件（满足其一）：
+    1. 环境变量 STUDYTASK_SEED=1（Render 部署配置中显式设置）；
+    2. 检测到云端 PaaS 运行环境（存在 PORT / RAILWAY_ENVIRONMENT / RENDER 等标志），
+       便于在 Railway 等平台上零配置启用。
+
+    本地运行与自动化测试均不触发，保证测试用例的干净初始状态。
     """
-    if os.environ.get("STUDYTASK_SEED") != "1":
+    explicit = os.environ.get("STUDYTASK_SEED") == "1"
+    cloud_hint = any(
+        os.environ.get(k)
+        for k in ("PORT", "RAILWAY_ENVIRONMENT", "RENDER", "FLY_APP_NAME", "DYNO")
+    )
+    if not (explicit or cloud_hint):
         return
     conn = get_db()
     if conn.execute("SELECT COUNT(*) FROM tasks").fetchone()[0] > 0:
