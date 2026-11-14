@@ -11,8 +11,8 @@
 |---|---|
 | **代码仓库（GitHub，提交用）** | **https://github.com/cql123-love/study-task** |
 | GitHub 个人主页 | https://github.com/cql123-love |
-| **Web 访问地址 A（云端常驻，无需本机开机）** | 见下方「云端部署」一节，部署后回填 |
-| **Web 访问地址 B（本机固定地址，需本机开机）** | **https://studytask.loca.lt** |
+| **Web 访问地址（云端常驻，无需本机开机）** | **https://studytask-production-44f96ffe.up.railway.app** |
+| Web 访问地址（本机固定地址，需本机开机） | https://studytask.loca.lt |
 | 本地运行访问地址 | http://127.0.0.1:5000 |
 
 **部署说明（重要）**
@@ -21,19 +21,31 @@
 
 | 方式 | 地址 | 是否依赖本机开机 | 说明 |
 |---|---|---|---|
-| **云端常驻部署（推荐）** | `https://studytask-xxxx.onrender.com` | **否** | 提交到 Render 免费实例，任何人任何时候都能访问；仓库内已含 `render.yaml`，3 步即可完成部署 |
+| **云端常驻部署（推荐，已上线）** | `https://studytask-production-44f96ffe.up.railway.app` | **否** | 已部署到 Railway 免费实例，**任何人任何时候打开都是同一个网址**，本机关机不影响；仓库内含 `railway.json`，3 步可复现部署 |
 | 本机固定隧道 | `https://studytask.loca.lt` | 是 | 本机 Flask(8088) + localtunnel 固定子域名，地址永久固定；需本机开机且服务在运行 |
 
+- 云端地址已实测：首页 HTTP 200（响应约 1.2 秒），新建/校验/状态流转/统计/组合筛选/删除确认全链路 10 项端到端实测全部通过。
 - 本机固定地址的一键启动：`bash start_public.sh`（停止：`bash start_public.sh stop`）。
-- 免费云实例 15 分钟无访问会休眠，首次打开需等待约 30~60 秒唤醒。
+- 免费云实例闲置后会休眠（Railway 约 5 分钟无请求后休眠），首次打开需等待十几秒唤醒。
 - 云端实例磁盘为临时盘，**重新部署后数据会重置**；因此云端首次启动会自动写入 5 条演示数据（由环境变量 `STUDYTASK_SEED=1` 或云端环境自动检测触发，仅云端启用，本地运行与自动化测试不受影响）。
 - **持久化验收（T10）以本地运行为准**：本地 SQLite 数据文件 `studytask.db` 随项目目录保存，重启服务后数据仍在。
 
 ### 云端部署（免费，无需信用卡）
 
-仓库已内置两套部署配置（`render.yaml` 与 `railway.json`），任选其一，**均不需要绑定信用卡**。
+仓库已内置两套部署配置（`railway.json` 与 `render.yaml`），任选其一，**均不需要绑定信用卡**。
 
-**方案一：Render（推荐）**
+**方案一：Railway（✅ 本项目实际采用，已上线）**
+
+仓库内 `railway.json` 已配置好 Nixpacks 构建与启动命令，部署后自动获得固定域名。
+
+1. 打开 <https://railway.com/new> → 用 GitHub 登录 → 选择 **GitHub Repository**
+2. 首次需先点 **Configure GitHub App** 授权（Repository access 选 *Only select repositories* 并勾选 `study-task`），授权后点 **Refresh**
+3. 选择 `cql123-love/study-task` → Railway 自动读取 `railway.json` 完成构建
+4. 构建完成后自动分配固定域名（形如 `https://studytask-production-xxxx.up.railway.app`）
+
+**本项目当前部署地址：`https://studytask-production-44f96ffe.up.railway.app`**（Free 计划，$0/月，免信用卡，30 天 $5 试用额度后 $1/月）
+
+**方案二：Render（备选）**
 
 配置（仓库内 `render.yaml` 已自动填好）：Build `pip install -r requirements.txt` / Start `gunicorn app:app --bind 0.0.0.0:$PORT` / Plan `Free`。
 
@@ -43,16 +55,6 @@
 
 > ⚠️ 若创建服务时看到 **Starter / $7 per month** 之类的选项，**务必选 Free**——Render 仅在选择付费实例时才要求绑定信用卡；Free 实例全程免卡。
 > 若 `render.com` 主域名因网络 DNS 污染打不开，改用 **https://dashboard.render.com/** 亦可（该域名可正常访问），路径为 Dashboard → New → Web Service → 选择仓库 → Instance Type 选 Free → Create Web Service。
-
-**方案二：Railway（国内访问更稳，同样免卡）**
-
-仓库内 `railway.json` 已配置好 Nixpacks 构建与启动命令。
-
-1. 打开 <https://console.railway.app/> → 用 GitHub 登录 → **New Project → Deploy from GitHub Repo**
-2. 选择 `cql123-love/study-task`，Railway 会自动读取 `railway.json` 完成构建
-3. 生成域名后，在 Service 的 **Settings → Networking** 中点 **Generate Domain** 即可得到公网地址
-
-**部署完成后**，将生成的公网地址回填到上表「Web 访问地址 A」一行即可。
 
 
 ## 技术栈
