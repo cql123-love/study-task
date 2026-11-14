@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}任务详情{% endblock %}
 {% block content %}
-<h2>{{ task.name }}</h2>
+<h2>✦ {{ task.name }}</h2>
 {% if task.flag == '逾期' %}<span class="pill flag-overdue">逾期</span>
 {% elif task.flag == '即将到期' %}<span class="pill flag-soon">即将到期</span>{% endif %}
 <dl class="detail">

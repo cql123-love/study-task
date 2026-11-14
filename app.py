@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """StudyTask —— 个人学习任务管理系统（实验一）
 
+界面品牌名：CQL's World（项目代号沿用指导书要求的 StudyTask）。
 依据《软件工程》实验指导书 附录A《StudyTask需求规格说明书》实现。
 技术栈：Python 3.11+ / Flask / SQLite。
 """

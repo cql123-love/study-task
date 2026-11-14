@@ -43,7 +43,8 @@ def test_t2_empty_name_rejected(client):
     resp = client.get("/")
     assert "任务总数</div>" in resp.get_data(as_text=True) or True
     page = client.get("/").get_data(as_text=True)
-    assert "暂无任务" in page
+    # 空状态提示（品牌化文案）
+    assert "还没有任务哦" in page
 
 
 def test_t2b_invalid_date_rejected(client):

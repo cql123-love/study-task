@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ '编辑任务' if mode=='edit' else '新建任务' }}{% endblock %}
 {% block content %}
-<h2>{{ '编辑任务' if mode=='edit' else '新建任务' }}</h2>
+<h2>🌸 {{ '编辑任务' if mode=='edit' else '新建任务' }}</h2>
 <form method="post" class="task-form">
   <label>任务名称 <span class="req">*</span>
     <input type="text" name="name" maxlength="100" required

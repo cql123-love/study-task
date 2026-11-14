@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block title %}任务列表{% endblock %}
 {% block content %}
+<section class="hero">
+  <h1>欢迎来到 CQL&rsquo;s World ✦</h1>
+  <p>把课程作业、实验与考试安排都收在这里，让每一天的目标都清清楚楚。</p>
+  <div class="chips">
+    <span class="chip">📖 共 {{ total }} 项任务</span>
+    <span class="chip">✅ 已完成 {{ done }} 项</span>
+    <span class="chip">💗 完成率 {{ rate }}%</span>
+  </div>
+</section>
+
 <section class="stats">
   <div class="stat-card"><div class="stat-num">{{ total }}</div><div class="stat-label">任务总数</div></div>
   <div class="stat-card"><div class="stat-num">{{ done }}</div><div class="stat-label">已完成</div></div>
@@ -63,7 +73,10 @@
     </tbody>
   </table>
   {% else %}
-  <div class="empty">暂无任务，点击右上角「＋ 新建任务」开始记录你的学习任务。</div>
+  <div class="empty">
+    <span class="big">🌸</span>
+    还没有任务哦，点击右上角「＋ 新建任务」开启你的学习计划吧～
+  </div>
   {% endif %}
 </section>
 {% endblock %}
