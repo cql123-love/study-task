@@ -161,6 +161,12 @@ main { flex: 1; padding: 26px 0 44px; }
 .filter-form input:focus, .filter-form select:focus {
   outline: none; border-color: var(--pink-300); box-shadow: 0 0 0 3px var(--pink-100);
 }
+.reset-form { margin-left: auto; }
+.btn-reset {
+  background: linear-gradient(135deg, #f472b6, var(--plum));
+  border-color: transparent; color: #fff; font-weight: 600;
+}
+.btn-reset:hover { color: #fff; box-shadow: 0 6px 16px rgba(124,58,237,.28); }
 
 /* ---------------- 表格 ---------------- */
 .task-table {

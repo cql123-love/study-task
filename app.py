@@ -112,6 +112,29 @@ def seed_demo_data():
     conn.commit()
     conn.close()
 
+
+def demo_mode_enabled():
+    """是否处于演示数据模式（云端环境或显式开启 STUDYTASK_SEED=1）。"""
+    if os.environ.get("STUDYTASK_SEED") == "1":
+        return True
+    return any(
+        os.environ.get(k)
+        for k in ("PORT", "RAILWAY_ENVIRONMENT", "RENDER", "FLY_APP_NAME", "DYNO")
+    )
+
+
+def reset_demo_data():
+    """清空任务表并重新写入演示数据（仅演示模式可用）。"""
+    if not demo_mode_enabled():
+        return False
+    conn = get_db()
+    conn.execute("DELETE FROM tasks")
+    conn.commit()
+    conn.close()
+    seed_demo_data()
+    return True
+
+
 def validate_form(form):
     """校验表单，返回 (data, errors)。规则见 SRS A.2 / FR-01。"""
     errors = []
@@ -219,7 +242,18 @@ def index():
         f_priority=priority,
         statuses=STATUSES,
         priorities=PRIORITIES,
+        demo_mode=demo_mode_enabled(),
     )
+
+
+@app.route("/reset-demo", methods=["POST"])
+def reset_demo():
+    """演示模式专用：清空并重新写入演示数据，便于现场演示时快速恢复。"""
+    if reset_demo_data():
+        flash("演示数据已重置")
+    else:
+        flash("当前环境未启用演示数据模式")
+    return redirect(url_for("index"))
 
 
 @app.route("/task/<int:task_id>")

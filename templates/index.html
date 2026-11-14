@@ -36,6 +36,12 @@
     </label>
     <button type="submit" class="btn">筛选</button>
     <a class="btn btn-ghost" href="{{ url_for('index') }}">清除</a>
+    {% if demo_mode %}
+    <form method="post" action="{{ url_for('reset_demo') }}" class="reset-form"
+          onsubmit="return confirm('确定要重置为演示数据吗？当前所有任务将被清空并重新生成。');">
+      <button type="submit" class="btn btn-reset">↺ 重置演示数据</button>
+    </form>
+    {% endif %}
   </form>
 </section>
 
